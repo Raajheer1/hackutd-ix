@@ -1,7 +1,7 @@
 <template>
   <v-app>
     <v-main>
-      <HelloWorld/>
+      <router-view />
     </v-main>
   </v-app>
 </template>
@@ -21,3 +21,9 @@ export default {
   }),
 }
 </script>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
+*{
+  font-family: 'Outfit', sans-serif;
+}
+</style>
