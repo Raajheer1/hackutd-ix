@@ -40,7 +40,7 @@ func (u *User) DeleteUser() (*User, error) {
 func GetByID(uid uint) (User, error) {
 	var u User
 	if err := DB.First(&u, uid).Error; err != nil {
-		return u, errors.New("User now found!")
+		return u, errors.New("User not found!")
 	}
 
 	u.RemovePassword()
