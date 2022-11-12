@@ -3,6 +3,7 @@ package models
 import (
 	"fmt"
 	"github.com/jinzhu/gorm"
+	_ "github.com/jinzhu/gorm/dialects/mysql"
 	"github.com/joho/godotenv"
 	"log"
 	"os"
@@ -33,6 +34,6 @@ func ConnectDatabase() {
 		fmt.Println("Connected to database.")
 	}
 
-	DB.AutoMigrate()
+	DB.AutoMigrate(&User{})
 
 }
