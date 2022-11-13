@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/Raajheer1/hackutd-ix/m/v2/models"
+	"github.com/Raajheer1/hackutd-ix/m/v2/utils/token"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
