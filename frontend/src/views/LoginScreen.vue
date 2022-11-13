@@ -1,17 +1,18 @@
 <template>
     <v-col class="login-screen">
         <!-- Prompt for the user -->
-        <p class="login-title">Please enter your username and password</p>
+        <p class="login-title">Please enter your Email and Password</p>
 
         <!-- Username text -->
         <div class="username-title">
-            <p> Username: </p>
+            <p> Email: </p>
         </div>
         <!-- Input box for username -->
         <div class="input-box">
             <v-text-field 
-            label="Enter your username" 
+            label="Enter your Email"
             type="input"
+            v-model="email"
             ></v-text-field>
 
         </div>
@@ -23,7 +24,8 @@
         <div class="input-box">
             <v-text-field 
             label="Enter your password" 
-            type="input"
+            type="password"
+            v-model="password"
             ></v-text-field>
         </div>
         <!-- Button input -->
@@ -41,9 +43,25 @@
 </template>
 <script setup>
 import {useRouter} from 'vue-router'
+import {ref} from 'vue'
+const email = ref("")
+const password = ref("")
+import {useStore} from 'vuex';
+const store = useStore();
+import axios from 'axios';
 const router = useRouter()
 function clickButton(){
-    router.push({path: '/'})
+  axios.post('https://hackutd.raajpatel.dev/auth/login', {
+    email: email.value,
+    password: password.value
+  })
+      .then((res) => {
+        store.state.token = res.data.token;
+        router.push({path: '/'})
+      })
+      .catch((err) => {
+        console.log("Invalid credentials")
+      })
 }
 </script>
 

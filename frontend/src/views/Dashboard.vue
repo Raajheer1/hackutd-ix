@@ -126,8 +126,15 @@ import DnutChart from "@/components/DnutChart.vue";
 import ExpandMenu from "../components/ExpandMenu.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
+import {useRouter} from 'vue-router'
 import { computed } from "@vue/reactivity";
+const router = useRouter()
 const store = useStore();
+
+if(store.state.token === ""){
+  router.push({path: '/login'})
+}
+
 
 async function fetchFolio() {
   const bonds = await axios.get(
