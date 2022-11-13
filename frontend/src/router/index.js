@@ -7,7 +7,6 @@ const routes = [
     component: Dashboard, 
   },
 ];
-
 const router = createRouter({
   history: createWebHistory(),
   routes,

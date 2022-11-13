@@ -1,29 +1,29 @@
 <template>
-  <v-app>
-    <v-main>
-      <router-view />
-    </v-main>
-  </v-app>
+  <router-view />
+  <NavBar></NavBar>
 </template>
 
 <script>
-import HelloWorld from './components/HelloWorld.vue'
+import HelloWorld from "./components/HelloWorld.vue";
+import NavBar from "./components/NavBar.vue";
 
 export default {
-  name: 'App',
+  name: "App",
 
   components: {
     HelloWorld,
+    NavBar,
   },
 
   data: () => ({
     //
   }),
-}
+};
 </script>
 <style>
-@import url('https://fonts.googleapis.com/css2?family=Outfit&display=swap');
-*{
-  font-family: 'Outfit', sans-serif;
+@import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
+* {
+  font-family: "Montserrat", sans-serif;
+  color:#313131;
 }
 </style>
