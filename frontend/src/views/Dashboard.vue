@@ -1,26 +1,45 @@
 <template>
   <v-col class="dashboard">
     <!-- TITLE -->
-    <p class="dash-title">Dashboard</p>
+    <p class="dash-title">
+      Dashboard
+    </p>
 
     <!-- RISK RETURN MENU -->
     <div class="risk-return">
       <div class="risk-card">
         <p class="risk-title">Risk Factor</p>
-        <p class="risk-metric">99%</p>
+        <div class="risk-metrics">
+          <p class="risk-factor" :style="{ color: riskColor }">
+            {{ store.state.riskLevel }}
+          </p>
+          <p class="risk-label" :style="{ color: riskColor }">
+            {{ riskLabel }}
+          </p>
+        </div>
       </div>
       <div class="risk-card">
         <p class="risk-title">Expected Return</p>
-        <p class="risk-metric">99%</p>
+        <p class="return-metric">99%</p>
       </div>
     </div>
     <!-- PORTFOLIO PIE CHART -->
     <div class="pie-chart">
-      <DnutChart></DnutChart>
+      <DnutChart
+        :values="[stockPercent, savingsPercent, bondsPercent]"
+      ></DnutChart>
     </div>
     <div class="money-label">
       <p class="money-label-title">Account value</p>
-      <p class="money-label-metric">$10,000</p>
+      <p class="money-label-metric">
+        {{
+          accountValue.toLocaleString("en-US", {
+            style: "currency",
+            currency: "USD",
+            maximumFractionDigits: 0,
+          })
+        }}
+      </p>
     </div>
     <!-- BREAKDOWN SUBTITLE -->
     <div class="breakdown-title">Breakdown</div>
@@ -31,8 +50,18 @@
         @click="openStockMenu = true"
       >
         <p class="investment-label stocks-solid">Stocks</p>
-        <p class="investment-percent">33%</p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-percent">
+          {{ Math.floor(stockPercent) }}%
+        </p>
+        <p class="investment-ammount">
+          {{
+            stocksValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
       <ExpandMenu
         :expand="openStockMenu"
@@ -45,8 +74,18 @@
         @click="openSavingsMenu = true"
       >
         <p class="investment-label savings-solid">Savings</p>
-        <p class="investment-percent">33%</p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-percent">
+          {{ Math.floor(savingsPercent) }}%
+        </p>
+        <p class="investment-ammount">
+          {{
+            savingsValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
       <ExpandMenu
         :expand="openSavingsMenu"
@@ -59,8 +98,18 @@
         @click="openBondMenu = true"
       >
         <p class="investment-label bonds-solid">Bonds</p>
-        <p class="investment-percent">33%</p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-percent">
+          {{ Math.floor(bondsPercent) }}%
+        </p>
+        <p class="investment-ammount">
+          {{
+            bondsValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
       <ExpandMenu
         :expand="openBondMenu"
@@ -76,6 +125,9 @@
 import DnutChart from "@/components/DnutChart.vue";
 import ExpandMenu from "../components/ExpandMenu.vue";
 import { ref } from "vue";
+import { useStore } from "vuex";
+import { computed } from "@vue/reactivity";
+const store = useStore();
 const stocks = [
   { name: "Apple", shares: 3, price: 98.88 },
   { name: "Google", shares: 4, price: 3143.62 },
@@ -96,7 +148,65 @@ const openStockMenu = ref(false);
 const openSavingsMenu = ref(false);
 const openBondMenu = ref(false);
 
-const accountValue = ref(10000)
+const stockPercent = store.state.stockPercent;
+const savingsPercent = store.state.savingsPercent;
+const bondsPercent = store.state.bondsPercent;
+
+const accountValue = store.state.accountValue;
+const stocksValue = accountValue * (stockPercent / 100);
+const savingsValue = accountValue * (savingsPercent / 100);
+const bondsValue = accountValue * (bondsPercent / 100);
+
+const riskColor = ref("black");
+const riskLabel = ref("");
+switch (store.state.riskLevel) {
+  case 0:
+    riskColor.value = "#33CC00";
+    riskLabel.value = "Low";
+    break;
+  case 1:
+    riskColor.value = "#55AA00";
+    riskLabel.value = "Medium";
+    break;
+  case 2:
+    riskColor.value = "#778800";
+    riskLabel.value = "Balanced";
+    break;
+  case 3:
+    riskColor.value = "#BB4400";
+    riskLabel.value = "High";
+    break;
+  case 4:
+    riskColor.value = "#DD2200";
+    riskLabel.value = "Extreme";
+    break;
+}
+const x = computed(() => {
+  console.log(store.state.riskLevel);
+  switch (store.state.riskLevel) {
+    case 0:
+      riskColor.value = "#33CC00";
+      riskLabel.value = "Low";
+      break;
+    case 1:
+      riskColor.value = "#55AA00";
+      riskLabel.value = "Medium";
+      break;
+    case 2:
+      riskColor.value = "#778800";
+      riskLabel.value = "Balanced";
+      break;
+    case 3:
+      riskColor.value = "#BB4400";
+      riskLabel.value = "High";
+      break;
+    case 5:
+      riskColor.value = "#DD2200";
+      riskLabel.value = "Extreme";
+      break;
+  }
+  return 1;
+});
 </script>
 <style scoped>
 .dashboard {
@@ -131,13 +241,27 @@ const accountValue = ref(10000)
 .risk-title {
   font-weight: bold;
   font-size: 21px;
-  width: fit-content;
+  width: 100px;
 }
-.risk-metric {
+.risk-metrics {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+}
+.return-metric {
   font-size: 28px;
   display: flex;
   justify-content: center;
   align-items: center;
+}
+.risk-factor {
+  font-size: 30px;
+  text-align: center;
+  font-weight: bold;
+}
+.risk-label {
+  font-size: 15px;
+  font-weight: bold;
 }
 .money-label {
   position: absolute;

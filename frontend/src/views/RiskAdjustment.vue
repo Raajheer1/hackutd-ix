@@ -11,7 +11,15 @@
         <p class="investment-percent">
           {{ Math.floor(stocksPercent) }}%
         </p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-ammount">
+          {{
+            stocksValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
       <div
         class="investment-card savings"
@@ -21,7 +29,15 @@
         <p class="investment-percent">
           {{ Math.floor(savingsPercent) }}%
         </p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-ammount">
+          {{
+            savingsValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
       <div
         class="investment-card bonds"
@@ -31,12 +47,22 @@
         <p class="investment-percent">
           {{ Math.floor(bondsPercent) }}%
         </p>
-        <p class="investment-ammount">$3,333</p>
+        <p class="investment-ammount">
+          {{
+            bondsValue.toLocaleString("en-US", {
+              style: "currency",
+              currency: "USD",
+              maximumFractionDigits: 0,
+            })
+          }}
+        </p>
       </div>
     </div>
     <!-- PORTFOLIO PIE CHART -->
     <div class="pie-chart">
-      <DnutChart :values="dnutChartValues"></DnutChart>
+      <DnutChart
+        :values="[stocksPercent, savingsPercent, bondsPercent]"
+      ></DnutChart>
     </div>
     <!-- PIE CHART CHANGES LEGEND -->
     <div class="changes-legend">
@@ -59,7 +85,8 @@
     <!-- Slider Labels -->
     <div class="slider-labels">
       <p class="slider-label left">
-        Risk Factor: <span class="slider-value">{{ riskValue }}%</span>
+        Risk Factor:
+        <span class="slider-value risk">{{ riskValue }}</span>
       </p>
       <p class="slider-label right">
         Return:
@@ -71,11 +98,13 @@
       <v-slider
         v-model="riskSlider"
         color="#DCCBAB"
-        step="25"
+        step="1"
         track-size="9"
         thumb-size="33"
         show-ticks="always"
         hide-details
+        :min="0"
+        :max="4"
       ></v-slider>
       <p class="risk-messages">
         {{ sliderMessages[riskValue] }}
@@ -87,29 +116,28 @@
 <script setup>
 import DnutChart from "@/components/DnutChart.vue";
 import { ref, computed } from "vue";
+import { useStore } from "vuex";
 
-const riskSlider = ref(50);
-const riskValue = computed(() => Math.floor(riskSlider.value));
+const store = useStore();
+const riskSlider = ref(store.state.riskLevel);
+const riskValue = computed(() => riskSlider.value);
 
-const stocksPercent = ref(33);
-const savingsPercent = ref(33);
-const bondsPercent = ref(33);
-const dnutChartValues = computed(() => {
-  stocksPercent.value = riskSlider.value;
-  savingsPercent.value = (100 - riskSlider.value) / 2;
-  bondsPercent.value = (100 - riskSlider.value) / 2;
-  return [
-    stocksPercent.value,
-    savingsPercent.value,
-    bondsPercent.value,
-  ];
-});
+const stocksPercent = ref(store.state.stockPercent);
+const savingsPercent = ref(store.state.savingsPercent);
+const bondsPercent = ref(store.state.bondsPercent);
+
+const accountValue = store.state.accountValue;
+const stocksValue = accountValue * (stocksPercent.value / 100);
+const savingsValue = accountValue * (savingsPercent.value / 100);
+const bondsValue = accountValue * (bondsPercent.value / 100);
+
+
 const sliderMessages = {
   0: "Low Risk",
-  25: "Moderate Risk",
-  50: "Balanced Risk",
-  75: "High yield",
-  100: "Bet the farm",
+  1: "Moderate Risk",
+  2: "Balanced Risk",
+  3: "High yield",
+  4: "Bet the farm",
 };
 </script>
 <style scoped>
@@ -231,14 +259,20 @@ const sliderMessages = {
   background-color: #d8d8d8bc;
   padding: 10px;
   border-radius: 10px;
+  height: 52px;
 }
-.slider-label.left{
+.slider-label.left {
   width: 193px;
 }
 .slider-value {
   color: #e39400;
   font-weight: bold;
   font-size: 21px;
-  margin:auto;
+  margin: auto;
+}
+.slider-value.risk {
+  margin-left: 15px;
+  font-size: 21px;
+  font-weight: bold;
 }
 </style>
