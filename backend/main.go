@@ -8,6 +8,7 @@ import (
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 	"github.com/joho/godotenv"
+	"net/http"
 	"os"
 )
 
@@ -26,6 +27,10 @@ func main() {
 
 	r := gin.Default()
 	r.Use(cors.New(corsConfig))
+
+	r.GET("/", func(c *gin.Context) {
+		c.JSON(http.StatusOK, gin.H{"message": "Risk Management API Online."})
+	})
 
 	auth := r.Group("/auth")
 	auth.POST("/register", controllers.Register)
