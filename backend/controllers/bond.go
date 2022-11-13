@@ -35,6 +35,22 @@ func CreateBond(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Bond Added"})
 }
 
+func GetBond(c *gin.Context) {
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	bonds, err := models.GetBond(userId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"bonds": bonds})
+}
+
 func UpdateBond(c *gin.Context) {
 	var input BondInput
 	if err := c.ShouldBindJSON(&input); err != nil {

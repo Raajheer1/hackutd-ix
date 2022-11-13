@@ -21,6 +21,15 @@ func (v *Saving) CreateSaving() (*Saving, error) {
 	return v, nil
 }
 
+func GetSaving(userID uint) ([]Saving, error) {
+	var savings []Saving
+	if err := DB.Where("user_id = ?", userID).Find(&savings).Error; err != nil {
+		return savings, err
+	}
+
+	return savings, nil
+}
+
 func (v *Saving) UpdateSaving() (*Saving, error) {
 	var saving Saving
 	if err := DB.Where("id = ?", v.ID).First(&saving).Error; err != nil {

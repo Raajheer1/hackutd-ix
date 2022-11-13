@@ -22,6 +22,15 @@ func (b *Bond) CreateBond() (*Bond, error) {
 	return b, nil
 }
 
+func GetBond(userID uint) ([]Bond, error) {
+	var bonds []Bond
+	if err := DB.Where("user_id = ?", userID).Find(&bonds).Error; err != nil {
+		return bonds, err
+	}
+
+	return bonds, nil
+}
+
 func (b *Bond) UpdateBond() (*Bond, error) {
 	var bond Bond
 	if err := DB.Where("id = ?", b.ID).First(&bond).Error; err != nil {

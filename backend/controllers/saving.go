@@ -33,6 +33,22 @@ func CreateSaving(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{"message": "Saving Added"})
 }
 
+func GetSaving(c *gin.Context) {
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	savings, err := models.GetSaving(userId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"savings": savings})
+}
+
 func UpdateSaving(c *gin.Context) {
 	var input SavingInput
 	if err := c.ShouldBindJSON(&input); err != nil {
