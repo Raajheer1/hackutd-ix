@@ -8,8 +8,6 @@ on:
       - '*'
       -
 
-working-directory: backend
-
 jobs:
   build:
     name: Build Image
@@ -29,15 +27,21 @@ jobs:
           password: ${{ secrets.DOCKER_PASSWORD }}
       - name: Install go dependencies
         run: go get -v ./...
+        working-directory: backend
       - name: Set Tag in env variable
         run: |
           echo "${{ secrets.DOCKER_USER }}/${{ secrets.REPOSITORY_NAME }}" > APP_NAME
           echo "$GITHUB_SHA" > TAG
+        working-directory: backend
       - name: Build Image
         run: docker build . --file Dockerfile --tag $(cat APP_NAME):$(cat TAG)
+        working-directory: backend
       - name: Tag the image to latest
         run: docker tag $(cat APP_NAME):$(cat TAG) $(cat APP_NAME):latest
+        working-directory: backend
       - name: Docker Login
         run: docker login -u ${{ secrets.DOCKER_USER }} -p ${{ secrets.DOCKER_PASSWORD }}
+        working-directory: backend
       - name: Image push
         run: docker push $(cat APP_NAME):latest
+        working-directory: backend
