@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from "vue-router";
 import Dashboard from "@/views/Dashboard.vue";
+import Splash from "@/views/Splash.vue";
 import RiskAdjustment from "@/views/RiskAdjustment.vue";
 import Portfolio from "@/views/Portfolio.vue"
 import LoginScreen from "@/views/LoginScreen.vue";
@@ -8,6 +9,10 @@ const routes = [
   {
     path: "/",
     component: Dashboard,
+  },
+  {
+    path: "/splash",
+    component: Splash,
   },
   {
     path: "/risk-adjust",

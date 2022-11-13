@@ -1,24 +1,14 @@
 <template>
   <router-view />
-  <NavBar></NavBar>
+  <NavBar v-if="store.state.token !== ''"></NavBar>
 </template>
 
-<script>
-import HelloWorld from "./components/HelloWorld.vue";
+<script setup>
 import NavBar from "./components/NavBar.vue";
 
-export default {
-  name: "App",
+import {useStore} from 'vuex';
+const store = useStore();
 
-  components: {
-    HelloWorld,
-    NavBar,
-  },
-
-  data: () => ({
-    //
-  }),
-};
 </script>
 <style>
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
