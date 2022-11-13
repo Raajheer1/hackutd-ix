@@ -17,7 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       name: Checkout Repo
-    - name: Set sha_short
       id: vars
       run: |-
         echo "sha_short=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
