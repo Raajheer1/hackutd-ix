@@ -17,16 +17,6 @@ jobs:
     steps:
     - uses: actions/checkout@v3
       name: Checkout Repo
-      id: vars
-      run: |-
-        echo "sha_short=$(echo ${{ github.sha }} | cut -c1-7)" >> $GITHUB_ENV
-        # Set default branch name for PRs, as we still want to test build an image on PRs
-        # but we have no branch to set a tag for.
-        branch="test"
-        if [[ "$GITHUB_REF" == "refs/heads/"* ]]; then
-          branch="${GITHUB_REF#refs/heads/}"
-        fi
-        echo "branch=${branch}" >> $GITHUB_ENV
     - name: Setup Go
       uses: actions/setup-go@v3
       with:
