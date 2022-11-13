@@ -33,7 +33,7 @@ func GetStock(userID uint) ([]Stock, error) {
 
 func (s *Stock) UpdateStock() (*Stock, error) {
 	var stock Stock
-	if err := DB.Where("id = ?", s.ID).First(&stock).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", s.ID, s.UserID).First(&stock).Error; err != nil {
 		return &Stock{}, err
 	}
 
@@ -46,7 +46,7 @@ func (s *Stock) UpdateStock() (*Stock, error) {
 
 func (s *Stock) DeleteStock() (*Stock, error) {
 	var stock Stock
-	if err := DB.Where("id = ?", s.ID).First(&stock).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", s.ID, s.UserID).First(&stock).Error; err != nil {
 		return &Stock{}, err
 	}
 

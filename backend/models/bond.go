@@ -11,7 +11,7 @@ type Bond struct {
 	CreatedAt time.Time ``
 	UpdatedAt time.Time ``
 	Symbol    string    `json:"symbol"`
-	Quantity    string    `json:"quantity"`
+	Quantity  string    `json:"quantity"`
 }
 
 func (b *Bond) CreateBond() (*Bond, error) {
@@ -33,7 +33,7 @@ func GetBond(userID uint) ([]Bond, error) {
 
 func (b *Bond) UpdateBond() (*Bond, error) {
 	var bond Bond
-	if err := DB.Where("id = ?", b.ID).First(&bond).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", b.ID, b.UserID).First(&bond).Error; err != nil {
 		return &Bond{}, err
 	}
 
@@ -46,7 +46,7 @@ func (b *Bond) UpdateBond() (*Bond, error) {
 
 func (b *Bond) DeleteBond() (*Bond, error) {
 	var bond Bond
-	if err := DB.Where("id = ?", b.ID).First(&bond).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", b.ID, b.UserID).First(&bond).Error; err != nil {
 		return &Bond{}, err
 	}
 

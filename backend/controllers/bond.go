@@ -65,9 +65,15 @@ func UpdateBond(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	b := models.Bond{}
 	b.ID = uint(id)
-	b.UserID = input.UserID
+	b.UserID = userId
 	b.Symbol = input.Symbol
 	b.Quantity = input.Quantity
 
@@ -87,8 +93,15 @@ func DeleteBond(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	b := models.Bond{}
 	b.ID = uint(id)
+	b.UserID = userId
 
 	_, err = b.DeleteBond()
 	if err != nil {

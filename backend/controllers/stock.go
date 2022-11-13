@@ -65,9 +65,15 @@ func UpdateStock(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	s := models.Stock{}
 	s.ID = uint(id)
-	s.UserID = input.UserID
+	s.UserID = userId
 	s.Ticker = input.Ticker
 	s.Shares = input.Shares
 
@@ -87,8 +93,15 @@ func DeleteStock(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	s := models.Stock{}
 	s.ID = uint(id)
+	s.UserID = userId
 
 	_, err = s.DeleteStock()
 	if err != nil {

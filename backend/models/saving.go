@@ -32,7 +32,7 @@ func GetSaving(userID uint) ([]Saving, error) {
 
 func (v *Saving) UpdateSaving() (*Saving, error) {
 	var saving Saving
-	if err := DB.Where("id = ?", v.ID).First(&saving).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", v.ID, v.UserID).First(&saving).Error; err != nil {
 		return &Saving{}, err
 	}
 
@@ -45,7 +45,7 @@ func (v *Saving) UpdateSaving() (*Saving, error) {
 
 func (v *Saving) DeleteSaving() (*Saving, error) {
 	var saving Saving
-	if err := DB.Where("id = ?", v.ID).First(&saving).Error; err != nil {
+	if err := DB.Where("id = ? AND user_id = ?", v.ID, v.UserID).First(&saving).Error; err != nil {
 		return &Saving{}, err
 	}
 

@@ -63,9 +63,15 @@ func UpdateSaving(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	v := models.Saving{}
 	v.ID = uint(id)
-	v.UserID = input.UserID
+	v.UserID = userId
 	v.Amount = input.Amount
 
 	_, err = v.UpdateSaving()
@@ -84,8 +90,15 @@ func DeleteSaving(c *gin.Context) {
 		return
 	}
 
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
 	v := models.Saving{}
 	v.ID = uint(id)
+	v.UserID = userId
 
 	_, err = v.DeleteSaving()
 	if err != nil {
