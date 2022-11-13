@@ -22,14 +22,30 @@ func (s *Stock) CreateStock() (*Stock, error) {
 	return s, nil
 }
 
-// TODO - Update Stock Route
 func (s *Stock) UpdateStock() (*Stock, error) {
-	return &Stock{}, nil
+	var stock Stock
+	if err := DB.Where("id = ?", s.ID).First(&stock).Error; err != nil {
+		return &Stock{}, err
+	}
+
+	if err := DB.Model(&stock).Updates(&s).Error; err != nil {
+		return &Stock{}, err
+	}
+
+	return s, nil
 }
 
-// TODO - Delete Stock Route
-func (u *Stock) DeleteStock() (*Stock, error) {
-	return &Stock{}, nil
+func (s *Stock) DeleteStock() (*Stock, error) {
+	var stock Stock
+	if err := DB.Where("id = ?", s.ID).First(&stock).Error; err != nil {
+		return &Stock{}, err
+	}
+
+	if err := DB.Delete(&stock).Error; err != nil {
+		return &Stock{}, err
+	}
+
+	return s, nil
 }
 
 func GetStockByID(uid uint) (Stock, error) {
