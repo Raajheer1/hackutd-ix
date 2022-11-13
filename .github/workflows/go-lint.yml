@@ -1,0 +1,25 @@
+name: go-lint
+on:
+  push:
+    branches:
+      - '*'
+    pull_request:
+      branches:
+        - '*'
+
+jobs:
+  golangci:
+    name: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/setup-go@v3
+        working-directory: ./backend
+        with:
+          go-version: 1.19.2
+      - uses: actions/checkout@v3
+        working-directory: ./backend
+      - name: golangci-lint
+        working-directory: ./backend
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
