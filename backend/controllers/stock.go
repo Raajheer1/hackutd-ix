@@ -135,11 +135,12 @@ func GetStockRisk(c *gin.Context) {
 
 	stocks, err := models.GetStock(userId)
 
-	stocks = append(stocks, models.Stock{Ticker: "INTC"})
-	stocks = append(stocks, models.Stock{Ticker: "AMD"})
+	stocks = append(stocks, models.Stock{Ticker: "INTC", Shares: 10})
+	stocks = append(stocks, models.Stock{Ticker: "AMD", Shares: 20})
 
 	stockDeviation := make(map[string]float64)
 	stockData := make(map[string][]float64)
+	stockWeights := make(map[string]uint)
 	for _, stock := range stocks {
 
 		resp, err := http.Get(fmt.Sprintf("https://www.alphavantage.co/query?function=TIME_SERIES_MONTHLY_ADJUSTED&symbol=%s&apikey=%s", stock.Ticker, os.Getenv("API_KEY")))
@@ -244,9 +245,37 @@ func GetStockRisk(c *gin.Context) {
 		}
 	}
 
-	fmt.Println(convMatrix)
+	var weights [][]float64
+	for _, weight := range stockWeights {
+		weights = append(weights, []float64{float64(weight)})
+	}
+	tempMatrix := MulMatrix(weights, convMatrix)
 
-	c.JSON(http.StatusOK, gin.H{"risk": 0})
+	var weightTrans [][]float64
+	weightTrans = append(weightTrans, []float64{})
+	for _, weight := range weights {
+		weightTrans[0] = append(weightTrans[0], weight[0])
+	}
+
+	final := 0.0
+	for i := range weightTrans[0] {
+		final += weightTrans[0][i] * tempMatrix[i][0]
+	}
+
+	c.JSON(http.StatusOK, gin.H{"risk": math.Sqrt(final)})
+}
+
+func MulMatrix(matrix1 [][]float64, matrix2 [][]float64) [][]float64 {
+	var result [][]float64
+	for i, row := range matrix1 {
+		for j := range row {
+			if j == 0 {
+				result = append(result, []float64{})
+			}
+			result[i] = append(result[i], matrix1[i][j]*matrix2[i][j])
+		}
+	}
+	return result
 }
 
 func GetStockReturn(c *gin.Context) {
