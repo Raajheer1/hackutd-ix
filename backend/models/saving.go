@@ -13,29 +13,45 @@ type Saving struct {
 	Amount    string    `json:"amount"`
 }
 
-func (s *Saving) CreateSaving() (*Saving, error) {
-	if err := DB.Create(&s).Error; err != nil {
+func (v *Saving) CreateSaving() (*Saving, error) {
+	if err := DB.Create(&v).Error; err != nil {
 		return &Saving{}, err
 	}
 
-	return s, nil
+	return v, nil
 }
 
-// TODO - Update Saving Route
-func (s *Saving) UpdateSaving() (*Saving, error) {
-	return &Saving{}, nil
+func (v *Saving) UpdateSaving() (*Saving, error) {
+	var saving Saving
+	if err := DB.Where("id = ?", v.ID).First(&saving).Error; err != nil {
+		return &Saving{}, err
+	}
+
+	if err := DB.Model(&saving).Updates(&v).Error; err != nil {
+		return &Saving{}, err
+	}
+
+	return v, nil
 }
 
-// TODO - Delete Saving Route
-func (u *Saving) DeleteSaving() (*Saving, error) {
-	return &Saving{}, nil
+func (v *Saving) DeleteSaving() (*Saving, error) {
+	var saving Saving
+	if err := DB.Where("id = ?", v.ID).First(&saving).Error; err != nil {
+		return &Saving{}, err
+	}
+
+	if err := DB.Delete(&saving).Error; err != nil {
+		return &Saving{}, err
+	}
+
+	return v, nil
 }
 
 func GetSavingByID(uid uint) (Saving, error) {
-	var s Saving
-	if err := DB.First(&s, uid).Error; err != nil {
-		return s, errors.New("Saving not found!")
+	var v Saving
+	if err := DB.First(&v, uid).Error; err != nil {
+		return v, errors.New("Saving not found!")
 	}
 
-	return s, nil
+	return v, nil
 }
