@@ -59,7 +59,7 @@
              variant="flat"
              color="#9bd5f2"
       >
-        Login
+        Register
       </v-btn>
     </div>
   </v-col>
@@ -97,11 +97,11 @@ function clickButton(){
   width: 100vw;
   height: 100vh;
   align-items: center;
-  padding-top: 100px;
+  padding-top: 50px;
 }
 
 .login-title {
-  margin-bottom: 45px;
+  margin-bottom: 25px;
   width: 100%;
   justify-content: center;
   font-size: 25px;
@@ -122,14 +122,14 @@ function clickButton(){
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 10px;
-  margin-top: 10px;
+  margin-bottom: 5px;
+  margin-top: 5px;
 }
 
 .login-button{
   display: flex;
   justify-content: center;
-  margin-top: 30px;
+  margin-top: 15px;
 }
 
 </style>
