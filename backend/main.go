@@ -33,7 +33,30 @@ func main() {
 
 	protected := r.Group("/api")
 	protected.Use(middlewares.JwtAuthMiddleware())
+
+	//Users
 	protected.GET("/user", controllers.GetCurrentUser)
+
+	//Stocks
+	stock := protected.Group("/stock")
+	stock.GET("/", controllers.GetStock)
+	stock.POST("/", controllers.CreateStock)
+	stock.PUT("/:id", controllers.UpdateStock)
+	stock.DELETE("/:id", controllers.DeleteStock)
+
+	//Savings
+	saving := protected.Group("/saving")
+	saving.GET("/", controllers.GetSaving)
+	saving.POST("/", controllers.CreateSaving)
+	saving.PUT("/:id", controllers.UpdateSaving)
+	saving.DELETE("/:id", controllers.DeleteSaving)
+
+	//Bonds
+	bond := protected.Group("/bond")
+	bond.GET("/", controllers.GetBond)
+	bond.POST("/", controllers.CreateBond)
+	bond.PUT("/:id", controllers.UpdateBond)
+	bond.DELETE("/:id", controllers.DeleteBond)
 
 	err = r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 	if err != nil {
