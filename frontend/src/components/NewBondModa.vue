@@ -31,6 +31,8 @@ import Modal from "./Modal.vue";
 import axios from "axios";
 import ConfirmedIcon from "./icons/ConfirmedIcon.vue";
 import { ref } from "vue";
+import {useStore} from 'vuex'
+const store = useStore()
 const emit = defineEmits(["close"]);
 const showConfirmed = ref(false);
 const purchaseDate = ref();
@@ -43,7 +45,7 @@ async function submitSecurity() {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+        `Bearer ${store.state.token}`,
       },
     }
   );
@@ -61,7 +63,7 @@ async function submitSecurity() {
       headers: {
         "Content-Type": "application/json",
         Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+        `Bearer ${store.state.token}`,
       },
     }
   );

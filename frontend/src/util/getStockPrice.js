@@ -1,5 +1,6 @@
 export default function getStockPrice(stocks) {
-  for (var i = 0; i < tickers.length; i++) {
+  console.log("getting prices...")
+  for (var i = 0; i < stocks.length; i++) {
     if (tickers[stocks[i].ticker] != undefined)
       stocks[i].price = tickers[stocks[i].ticker];
     else stocks[i].price = 0;
@@ -20,4 +21,5 @@ const tickers = {
   QQQ: 287.96,
   GOOGL: 96.41,
   INTC: 30.43,
+  AMC: 7.20
 };

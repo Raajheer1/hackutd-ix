@@ -1,9 +1,7 @@
 <template>
   <v-col class="dashboard">
     <!-- TITLE -->
-    <p class="dash-title">
-      Dashboard
-    </p>
+    <p class="dash-title">Dashboard</p>
 
     <!-- RISK RETURN MENU -->
     <div class="risk-return">
@@ -33,7 +31,7 @@
       <p class="money-label-title">Account value</p>
       <p class="money-label-metric">
         {{
-          accountValue.toLocaleString("en-US", {
+          parseInt(accountValue).toLocaleString("en-US", {
             style: "currency",
             currency: "USD",
             maximumFractionDigits: 0,
@@ -126,26 +124,25 @@ import DnutChart from "@/components/DnutChart.vue";
 import ExpandMenu from "../components/ExpandMenu.vue";
 import { ref } from "vue";
 import { useStore } from "vuex";
-import {useRouter} from 'vue-router'
+import { useRouter } from "vue-router";
 import { computed } from "@vue/reactivity";
 import getStockPrice from "@/util/getStockPrice.js";
-import axios from 'axios'
+import axios from "axios";
 const store = useStore();
-const router = useRouter()
+const router = useRouter();
 
-if(store.state.token === ""){
-  router.push({path: '/login'})
+if (store.state.token === "") {
+  router.push({ path: "/login" });
 }
 
-fetchFolio()
+fetchFolio();
 async function fetchFolio() {
   const bonds = await axios.get(
     `${import.meta.env.VITE_API_URL}/api/bond`,
     {
       headers: {
         "Content-Type": "text/plain",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+        Authorization: `Bearer ${store.state.token}`,
       },
     }
   );
@@ -154,8 +151,7 @@ async function fetchFolio() {
     {
       headers: {
         "Content-Type": "text/plain",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+        Authorization: `Bearer ${store.state.token}`,
       },
     }
   );
@@ -164,8 +160,7 @@ async function fetchFolio() {
     {
       headers: {
         "Content-Type": "text/plain",
-        Authorization:
-          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+        Authorization: `Bearer ${store.state.token}`,
       },
     }
   );
@@ -176,7 +171,32 @@ async function fetchFolio() {
     savings: savings.data.savings,
   };
   getStockPrice(portfolio.stocks);
+  for (var i = 0; i < portfolio.savings.length; i++) {
+    portfolio.savings[i].price = portfolio.savings[i].amount;
+  }
   console.log(portfolio);
+
+  const stocksValue = portfolio.stocks.reduce(
+    (acc, stock) => acc + stock.price * stock.shares ,
+    0
+  );
+  const savingsValue = portfolio.savings.reduce(
+    (acc, account) => acc + parseInt(account.amount),
+    0
+  );
+  console.log(stocksValue);
+  console.log(savingsValue);
+  store.state.accountValue = stocksValue + savingsValue;
+  let stockP = (stocksValue / store.state.accountValue) * 100;
+  let savingsP =
+    (savingsValue / store.state.accountValue) * 100;
+  let bondP = Math.floor(Math.random() * 10 + 1);
+  stockP -= Math.floor(bondP / 2);
+  savingsP -= Math.ceil(bondP / 2);
+
+  store.state.savingsPercent = savingsP;
+  store.state.stockPercent = stockP;
+  store.state.bondsPercent = bondP;
   store.state.portfolio = portfolio;
 }
 
@@ -200,14 +220,18 @@ const openStockMenu = ref(false);
 const openSavingsMenu = ref(false);
 const openBondMenu = ref(false);
 
-const stockPercent = store.state.stockPercent;
-const savingsPercent = store.state.savingsPercent;
-const bondsPercent = store.state.bondsPercent;
-
-const accountValue = store.state.accountValue;
-const stocksValue = accountValue * (stockPercent / 100);
-const savingsValue = accountValue * (savingsPercent / 100);
-const bondsValue = accountValue * (bondsPercent / 100);
+const stockPercent = computed(() => store.state.stockPercent);
+const savingsPercent = computed(
+  () => store.state.savingsPercent
+);
+const bondsPercent = computed(() => store.state.bondsPercent);
+const accountValue = computed(() => store.state.accountValue);
+const stocksValue =
+  accountValue.value * (stockPercent.value / 100);
+const savingsValue =
+  accountValue.value * (savingsPercent.value / 100);
+const bondsValue =
+  accountValue.value * (bondsPercent.value / 100);
 
 const riskColor = ref("black");
 const riskLabel = ref("");
