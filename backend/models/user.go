@@ -1,7 +1,6 @@
 package models
 
 import (
-	"errors"
 	"github.com/Raajheer1/hackutd-ix/m/v2/utils/token"
 	"golang.org/x/crypto/bcrypt"
 	"html"
@@ -27,23 +26,28 @@ func (u *User) CreateUser() (*User, error) {
 	return u, nil
 }
 
-// TODO - Update User Route
 func (u *User) UpdateUser() (*User, error) {
-	return &User{}, nil
-}
-
-// TODO - Delete User Route
-func (u *User) DeleteUser() (*User, error) {
-	return &User{}, nil
-}
-
-func GetByID(uid uint) (User, error) {
-	var u User
-	if err := DB.First(&u, uid).Error; err != nil {
-		return u, errors.New("User not found!")
+	var user User
+	if err := DB.Where("id = ?", u.ID).First(&user).Error; err != nil {
+		return &User{}, err
 	}
 
-	u.RemovePassword()
+	if err := DB.Model(&user).Updates(&u).Error; err != nil {
+		return &User{}, err
+	}
+
+	return u, nil
+}
+
+func (u *User) DeleteUser() (*User, error) {
+	var user User
+	if err := DB.Where("id = ?", u.ID).First(&user).Error; err != nil {
+		return &User{}, err
+	}
+
+	if err := DB.Delete(&user).Error; err != nil {
+		return &User{}, err
+	}
 
 	return u, nil
 }
