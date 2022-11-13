@@ -1,5 +1,7 @@
 run:
   deadline: 20m
+  skip-dirs:
+    - frontend
 
 linters:
   disable-all: true
@@ -39,7 +41,7 @@ linters-settings:
   goimports:
     # put imports beginning with prefix after 3rd-party packages;
     # it's a comma-separated list of prefixes
-    local-prefixes: github.com/adh-partnership
+    local-prefixes: github.com/Raajheer1
   maligned:
     # print struct with more effective memory layout or not, false by default
     suggest-new: true
@@ -137,7 +139,7 @@ linters-settings:
     sections:
       - standard # Captures all standard packages if they do not match another section.
       - default # Contains all imports that could not be matched to another section type.
-      - prefix(github.com/adh-partnership/) # Groups all imports with the specified Prefix.
+      - prefix(github.com/Raajheer1/) # Groups all imports with the specified Prefix.
   gocritic:
     enabled-checks:
       - appendCombine
