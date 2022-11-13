@@ -11,7 +11,7 @@
         <div class="input-box">
             <v-text-field 
             label="Enter your Email"
-            type="input"
+            type="email"
             v-model="email"
             ></v-text-field>
 

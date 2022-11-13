@@ -3,6 +3,7 @@ import Dashboard from "@/views/Dashboard.vue";
 import RiskAdjustment from "@/views/RiskAdjustment.vue";
 import Portfolio from "@/views/Portfolio.vue"
 import LoginScreen from "@/views/LoginScreen.vue";
+import RegisterScreen from "@/views/RegisterScreen.vue";
 const routes = [
   {
     path: "/",
@@ -19,6 +20,10 @@ const routes = [
   {
     path: "/login",
     component: LoginScreen,
+  },
+  {
+    path: "/register",
+    component: RegisterScreen,
   },
 ];
 const router = createRouter({
