@@ -22,6 +22,15 @@ func (s *Stock) CreateStock() (*Stock, error) {
 	return s, nil
 }
 
+func GetStock(userID uint) ([]Stock, error) {
+	var stocks []Stock
+	if err := DB.Where("user_id = ?", userID).Find(&stocks).Error; err != nil {
+		return stocks, err
+	}
+
+	return stocks, nil
+}
+
 func (s *Stock) UpdateStock() (*Stock, error) {
 	var stock Stock
 	if err := DB.Where("id = ?", s.ID).First(&stock).Error; err != nil {

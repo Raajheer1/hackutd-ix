@@ -2,6 +2,7 @@ package controllers
 
 import (
 	"github.com/Raajheer1/hackutd-ix/m/v2/models"
+	"github.com/Raajheer1/hackutd-ix/m/v2/utils/token"
 	"github.com/gin-gonic/gin"
 	"net/http"
 	"strconv"
@@ -33,6 +34,22 @@ func CreateStock(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"message": "Stock Added"})
+}
+
+func GetStock(c *gin.Context) {
+	userId, err := token.ExtractID(c)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	stocks, err := models.GetStock(userId)
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"stocks": stocks})
 }
 
 func UpdateStock(c *gin.Context) {

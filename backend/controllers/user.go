@@ -14,7 +14,7 @@ func GetCurrentUser(c *gin.Context) {
 		return
 	}
 
-	u, err := models.GetByID(userId)
+	u, err := models.GetUserByID(userId)
 	if err != nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
 		return

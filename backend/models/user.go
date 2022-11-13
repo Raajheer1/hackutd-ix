@@ -1,6 +1,7 @@
 package models
 
 import (
+	"errors"
 	"github.com/Raajheer1/hackutd-ix/m/v2/utils/token"
 	"golang.org/x/crypto/bcrypt"
 	"html"
@@ -21,6 +22,15 @@ type User struct {
 func (u *User) CreateUser() (*User, error) {
 	if err := DB.Create(&u).Error; err != nil {
 		return &User{}, err
+	}
+
+	return u, nil
+}
+
+func GetUserByID(uid uint) (User, error) {
+	var u User
+	if err := DB.First(&u, uid).Error; err != nil {
+		return u, errors.New("User not found!")
 	}
 
 	return u, nil

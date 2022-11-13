@@ -21,7 +21,6 @@ func CreateSaving(c *gin.Context) {
 
 	v := models.Saving{}
 	v.UserID = input.UserID
-	v.Symbol = input.Symbol
 	v.Amount = input.Amount
 
 	_, err := v.CreateSaving()
@@ -50,7 +49,6 @@ func UpdateSaving(c *gin.Context) {
 	v := models.Saving{}
 	v.ID = uint(id)
 	v.UserID = input.UserID
-	v.Symbol = input.Symbol
 	v.Amount = input.Amount
 
 	_, err = v.UpdateSaving()
