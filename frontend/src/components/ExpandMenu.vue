@@ -78,13 +78,13 @@ const column3Header = computed(() => {
   min-height: 450px;
 }
 .Stock {
-  background-color: #7fcef5;
+  background-color: #61d4fa;
 }
 .Savings {
   background-color: #f57fce;
 }
 .Bond {
-  background-color: #f5ed7f;
+  background-color: #dfd438;
 }
 .table-head {
   font-size: 25px !important;

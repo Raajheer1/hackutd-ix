@@ -24,6 +24,12 @@ export default {
 @import url("https://fonts.googleapis.com/css2?family=Montserrat&display=swap");
 * {
   font-family: "Montserrat", sans-serif;
-  color:#313131;
+  color: #313131;
+}
+#app{
+  height:100%;
+  overflow-y: scroll;
+  -webkit-overflow-scrolling: touch;
+  background-color: #FAF9F6;
 }
 </style>

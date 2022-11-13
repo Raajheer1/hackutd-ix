@@ -12,12 +12,17 @@ import {
   registerables,
 } from "chart.js";
 Chart.register(...registerables);
-
-const dataValues = ref([30, 40, 60]);
+const props = defineProps({
+  values: {
+    type: Array,
+    default: [33,33,33]
+  }
+})
+const dataValues = computed(()=>props.values);
 const dataLabels = ref([
   "Stocks",
-  // "Saving",
-  // "Bonds",
+  "Saving",
+  "Bonds",
 ]);
 
 const testData =
@@ -45,10 +50,11 @@ const options =
     (() => ({
       plugins: {
         legend: {
-          position: "center",
+          display: false,
+          position: "left",
           align:"center",
           labels:{
-            display: false,
+            display: true,
             font:{
                 size: 1
             },
@@ -64,7 +70,8 @@ const options =
         },
       },
       cutout: 120,
-      radius: '80%'
+      radius: '80%',
+      borderColor: "#FAF9F6"
     }));
 
 const { doughnutChartProps, doughnutChartRef } =

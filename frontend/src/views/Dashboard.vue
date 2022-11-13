@@ -6,7 +6,7 @@
     <!-- RISK RETURN MENU -->
     <div class="risk-return">
       <div class="risk-card">
-        <p class="risk-title">Current Risk</p>
+        <p class="risk-title">Risk Factor</p>
         <p class="risk-metric">99%</p>
       </div>
       <div class="risk-card">
@@ -95,6 +95,8 @@ const bonds = [
 const openStockMenu = ref(false);
 const openSavingsMenu = ref(false);
 const openBondMenu = ref(false);
+
+const accountValue = ref(10000)
 </script>
 <style scoped>
 .dashboard {
@@ -188,13 +190,13 @@ const openBondMenu = ref(false);
   border-radius: 10px;
 }
 .stocks {
-  background-color: #7fcef572;
+  background-color: #7fcef585;
 }
 .savings {
-  background-color: #f57fce72;
+  background-color: #f57fce85;
 }
 .bonds {
-  background-color: #f5ed7f72;
+  background-color: #f5ed7f85;
 }
 .stocks-solid {
   background-color: #7fcef5;

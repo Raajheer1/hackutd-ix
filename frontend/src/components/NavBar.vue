@@ -25,40 +25,42 @@
 import DnutIcon from "./icons/DnutIcon.vue";
 import PiggyBank from "./icons/PiggyBank.vue";
 import SlidersIcon from "./icons/SlidersIcon.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
+import {useRouter} from "vue-router"
+import {useRoute} from "vue-router"
+const router = useRouter();
+const route = useRoute();
+console.log(route.path)
 
-const slidersActive = ref(false);
-const dnutActive = ref(true);
-const piggyActive = ref(false);
+const slidersActive = computed(() => route.path == '/risk-adjust');
+const dnutActive = computed(() => route.path == '/');
+const piggyActive = computed(() => route.path == '/portfolio');;
 
 const activeColor = "#313131";
-const inactiveColor = "lightGray";
+const inactiveColor = "#afafaf";
 
 function slidersClick() {
-  piggyActive.value = false;
-  dnutActive.value = false;
-  slidersActive.value = true;
+  router.push({path:"/risk-adjust"})
 }
 function dnutClick() {
-  piggyActive.value = false;
-  slidersActive.value = false;
-  dnutActive.value = true;
+  router.push({path:"/"})
 }
 function piggyClick() {
-  slidersActive.value = false;
-  dnutActive.value = false;
-  piggyActive.value = true;
+  router.push({path:'/portfolio'})
 }
 </script>
 <style scoped>
 .navbar {
-  width: 100vw;
   position: fixed;
   bottom: 0;
   left: 0;
+  width: 100%;
   display: flex;
   flex-direction: row;
   padding-bottom: 10px;
+  background-color: #FAF9F6;
+  color: #afafaf;
+  z-index: 101;
 }
 .nav-item {
   width: 100%;
