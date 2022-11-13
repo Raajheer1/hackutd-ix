@@ -128,6 +128,48 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 import { computed } from "@vue/reactivity";
 const store = useStore();
+
+async function fetchFolio() {
+  const bonds = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/bond`,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+      },
+    }
+  );
+  const stocks = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/stock`,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+      },
+    }
+  );
+  const savings = await axios.get(
+    `${import.meta.env.VITE_API_URL}/api/saving`,
+    {
+      headers: {
+        "Content-Type": "text/plain",
+        Authorization:
+          "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJhdXRob3JpemVkIjp0cnVlLCJleHAiOjE2Njg0MzAyMTUsInVzZXJfaWQiOjF9.YRAOnrg_X3Bf6ypAMue1_1DdAfA2jzxkoqwvku4sNxk",
+      },
+    }
+  );
+
+  const portfolio = {
+    stocks: stocks.data.stocks,
+    bonds: bonds.data.bonds,
+    savings: savings.data.savings,
+  };
+  console.log(portfolio);
+  store.state.portfolio = portfolio;
+}
+
 const stocks = [
   { name: "Apple", shares: 3, price: 98.88 },
   { name: "Google", shares: 4, price: 3143.62 },
