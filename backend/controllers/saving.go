@@ -108,3 +108,11 @@ func DeleteSaving(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Saving deleted."})
 }
+
+func GetSavingRisk(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"risk": 0})
+}
+
+func GetSavingReturn(c *gin.Context) {
+	c.JSON(http.StatusOK, gin.H{"return": 3})
+}

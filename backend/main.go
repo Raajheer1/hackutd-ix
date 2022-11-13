@@ -43,6 +43,8 @@ func main() {
 	stock.POST("/", controllers.CreateStock)
 	stock.PUT("/:id", controllers.UpdateStock)
 	stock.DELETE("/:id", controllers.DeleteStock)
+	stock.GET("/return", controllers.GetStockReturn)
+	stock.GET("/risk", controllers.GetStockRisk)
 
 	//Savings
 	saving := protected.Group("/saving")
@@ -50,6 +52,8 @@ func main() {
 	saving.POST("/", controllers.CreateSaving)
 	saving.PUT("/:id", controllers.UpdateSaving)
 	saving.DELETE("/:id", controllers.DeleteSaving)
+	saving.GET("/return", controllers.GetSavingReturn)
+	saving.GET("/risk", controllers.GetSavingRisk)
 
 	//Bonds
 	bond := protected.Group("/bond")
@@ -57,6 +61,7 @@ func main() {
 	bond.POST("/", controllers.CreateBond)
 	bond.PUT("/:id", controllers.UpdateBond)
 	bond.DELETE("/:id", controllers.DeleteBond)
+	bond.GET("/return", controllers.GetBondReturn)
 
 	err = r.Run(fmt.Sprintf(":%s", os.Getenv("PORT")))
 	if err != nil {

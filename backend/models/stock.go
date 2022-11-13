@@ -11,7 +11,7 @@ type Stock struct {
 	CreatedAt time.Time ``
 	UpdatedAt time.Time ``
 	Ticker    string    `json:"ticker"`
-	Shares    string    `json:"shares"`
+	Shares    uint      `json:"shares"`
 }
 
 func (s *Stock) CreateStock() (*Stock, error) {

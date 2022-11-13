@@ -6,12 +6,12 @@ import (
 )
 
 type Bond struct {
-	ID        uint      `gorm:"primary_key" json:"id"`
-	UserID    uint      `json:"user_id"`
-	CreatedAt time.Time ``
-	UpdatedAt time.Time ``
-	Symbol    string    `json:"symbol"`
-	Quantity  string    `json:"quantity"`
+	ID           uint      `gorm:"primary_key" json:"id"`
+	UserID       uint      `json:"user_id"`
+	CreatedAt    time.Time ``
+	UpdatedAt    time.Time ``
+	PurchaseDate string    `json:"purchase_date"`
+	Maturity     string    `json:"maturity"`
 }
 
 func (b *Bond) CreateBond() (*Bond, error) {
