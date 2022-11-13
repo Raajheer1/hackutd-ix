@@ -128,14 +128,16 @@ import { ref } from "vue";
 import { useStore } from "vuex";
 import {useRouter} from 'vue-router'
 import { computed } from "@vue/reactivity";
-const router = useRouter()
+import getStockPrice from "@/util/getStockPrice.js";
+import axios from 'axios'
 const store = useStore();
+const router = useRouter()
 
 if(store.state.token === ""){
   router.push({path: '/login'})
 }
 
-
+fetchFolio()
 async function fetchFolio() {
   const bonds = await axios.get(
     `${import.meta.env.VITE_API_URL}/api/bond`,
@@ -173,6 +175,7 @@ async function fetchFolio() {
     bonds: bonds.data.bonds,
     savings: savings.data.savings,
   };
+  getStockPrice(portfolio.stocks);
   console.log(portfolio);
   store.state.portfolio = portfolio;
 }
