@@ -135,9 +135,6 @@ func GetStockRisk(c *gin.Context) {
 
 	stocks, err := models.GetStock(userId)
 
-	stocks = append(stocks, models.Stock{Ticker: "INTC", Shares: 10})
-	stocks = append(stocks, models.Stock{Ticker: "AMD", Shares: 20})
-
 	stockDeviation := make(map[string]float64)
 	stockData := make(map[string][]float64)
 	stockWeights := make(map[string]uint)
@@ -286,9 +283,6 @@ func GetStockReturn(c *gin.Context) {
 	}
 
 	stocks, err := models.GetStock(userId)
-
-	stocks = append(stocks, models.Stock{Ticker: "INTC", Shares: 10})
-	stocks = append(stocks, models.Stock{Ticker: "AMD", Shares: 20})
 
 	stockData := make(map[string]float64)
 	for _, stock := range stocks {
